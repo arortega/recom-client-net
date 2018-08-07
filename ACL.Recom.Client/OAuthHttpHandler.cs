@@ -49,6 +49,7 @@ namespace ACL.Recom.Client
             DiscoveryResponse disco;
             using (var discoClient = new DiscoveryClient(_urlAutenticacao))
             {
+                discoClient.Policy.RequireHttps = _urlAutenticacao.ToLower().StartsWith("https");
                 disco = await discoClient.GetAsync(cancellationToken);
                 if (disco.IsError)
                     throw disco.Exception;

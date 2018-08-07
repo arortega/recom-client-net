@@ -150,15 +150,14 @@ namespace ACL.Recom.Client
         /// <returns></returns>
         public Task EnviarUsuarioAsync(string login, string cnpjConstrutora, string codigoMunicipio)
         {
-            var json = JsonConvert.SerializeObject(new
+            var usuario = new Usuario
             {
-                login,
-                cnpjConstrutora,
-                codigoMunicipio
-            });
+                Login = login,
+                RaizCnpjConstrutora = cnpjConstrutora,
+                CodigoMunicipio = codigoMunicipio
+            };
 
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            return httpClient.PostAsync($"api/usuarios", content);
+            return httpClient.PostAsJsonAsync<Usuario>($"api/usuarios", usuario);
         }
 
         /// <summary>

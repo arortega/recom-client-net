@@ -2,6 +2,13 @@
 
 namespace ACL.Recom.Client.Entidades
 {
+    public class Usuario
+    {
+        public string Login { get; set; }
+        public string RaizCnpjConstrutora { get; set; }
+        public string CodigoMunicipio { get; set; }
+    }
+
     public class Obra
     {
         public string RaizCnpjConstrutora { get; set; }
