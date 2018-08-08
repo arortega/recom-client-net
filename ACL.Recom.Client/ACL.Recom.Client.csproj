@@ -8,7 +8,7 @@
     <Authors>ACL TI</Authors>
     <Description>Client para consumo das APIs do Recom</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Version>0.1.0</Version>
+    <Version>0.1.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
