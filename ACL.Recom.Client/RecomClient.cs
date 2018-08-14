@@ -13,7 +13,7 @@ namespace ACL.Recom.Client
         private readonly HttpClient httpClient;
         private readonly OAuthHttpHandler oAuthHttpHandler;
 
-        public RecomClient(string clienteId, string clienteSenha, string urlApi, string urlAutenticacao)
+        public RecomClient(string clienteId, string clienteSenha, string urlApi, string urlAutenticacao, object claims, string loginUsuario = null)
         {
             if (string.IsNullOrEmpty(clienteId))
                 throw new ArgumentNullException(nameof(clienteId));
@@ -30,7 +30,9 @@ namespace ACL.Recom.Client
             oAuthHttpHandler = new OAuthHttpHandler(
                 clienteId,
                 clienteSenha,
-                urlAutenticacao);
+                urlAutenticacao, 
+                claims, 
+                loginUsuario);
 
             httpClient = new HttpClient(oAuthHttpHandler)
             {

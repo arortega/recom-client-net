@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,14 +13,18 @@ namespace ACL.Recom.Client
         private readonly string _clienteId;
         private readonly string _clienteSenha;
         private readonly string _urlAutenticacao;
+        private readonly string _loginUsuario;
+        private readonly object _claims;
 
         private string _accessToken;
 
-        public OAuthHttpHandler(string clienteId, string clienteSenha, string urlAutenticacao)
+        public OAuthHttpHandler(string clienteId, string clienteSenha, string urlAutenticacao, object claims, string loginUsuario = null)
         {
             _clienteId = clienteId;
             _clienteSenha = clienteSenha;
             _urlAutenticacao = urlAutenticacao;
+            _loginUsuario = loginUsuario;
+            _claims = claims;
 
             InnerHandler = new HttpClientHandler();
         }
@@ -57,6 +63,19 @@ namespace ACL.Recom.Client
 
             using (var tokenClient = new TokenClient(disco.TokenEndpoint, _clienteId, _clienteSenha))
             {
+                if (!string.IsNullOrEmpty(_loginUsuario))
+                {
+                    var responseToken = await tokenClient.RequestResourceOwnerPasswordAsync(_loginUsuario, "123456", "recom", _claims);
+
+                    if (responseToken.IsError)
+                        throw new UnauthorizedAccessException();
+
+                    var handler = new JwtSecurityTokenHandler();
+                    var securityToken = handler.ReadToken(responseToken.AccessToken) as JwtSecurityToken;
+
+                    return responseToken.AccessToken;
+                }
+
                 var response = await tokenClient.RequestClientCredentialsAsync(
                     scope: "recom",
                     cancellationToken: cancellationToken
