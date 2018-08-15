@@ -13,7 +13,7 @@ namespace ACL.Recom.Client
         private readonly HttpClient httpClient;
         private readonly OAuthHttpHandler oAuthHttpHandler;
 
-        public RecomClient(string clienteId, string clienteSenha, string urlApi, string urlAutenticacao, object claims, string loginUsuario = null)
+        public RecomClient(string clienteId, string clienteSenha, string urlApi, string urlAutenticacao, object claims = null, string loginUsuario = null)
         {
             if (string.IsNullOrEmpty(clienteId))
                 throw new ArgumentNullException(nameof(clienteId));
@@ -161,10 +161,11 @@ namespace ACL.Recom.Client
         /// </summary>
         /// <param name="login">Login do usuário</param>
         /// <param name="cnpjConstrutora">CNPJ da construtora</param>
+        /// <param name="codigoMunicipio">Código IBGE do município</param>
         /// <returns></returns>
-        public Task RemoverPermissaoDoUsuarioAsync(string login, string cnpjConstrutora)
+        public Task RemoverPermissaoDoUsuarioAsync(string login, string cnpjConstrutora, string codigoMunicipio)
         {
-            return httpClient.DeleteAsync($"api/usuarios/{login}/{cnpjConstrutora}");
+            return httpClient.DeleteAsync($"api/usuarios/{login}/{cnpjConstrutora}/{codigoMunicipio}");
         }
     }
 }

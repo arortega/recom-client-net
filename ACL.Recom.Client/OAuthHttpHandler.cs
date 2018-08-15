@@ -63,7 +63,7 @@ namespace ACL.Recom.Client
 
             using (var tokenClient = new TokenClient(disco.TokenEndpoint, _clienteId, _clienteSenha))
             {
-                if (!string.IsNullOrEmpty(_loginUsuario))
+                if (!string.IsNullOrEmpty(_loginUsuario) && _claims != null)
                 {
                     var responseToken = await tokenClient.RequestResourceOwnerPasswordAsync(_loginUsuario, "123456", "recom", _claims);
 
