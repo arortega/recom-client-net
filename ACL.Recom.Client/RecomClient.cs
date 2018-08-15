@@ -53,58 +53,53 @@ namespace ACL.Recom.Client
         /// <summary>
         /// Obra como prestadora de serviço. Gera incremento no saldo dedutível.
         /// </summary>
-        /// <param name="codigoMunicipio">Código IBGE do município</param>
         /// <param name="nfse">NFS-e</param>
         /// <returns></returns>
-        public Task EnviarNFSeTomadorAsync(string codigoMunicipio, NFSeTomador nfse)
+        public Task EnviarNFSeTomadorAsync(NFSeTomador nfse)
         {
-            return httpClient.PostAsJsonAsync($"api/nfses/incrementar/{codigoMunicipio}", nfse);
+            return httpClient.PostAsJsonAsync($"api/nfses/incrementar", nfse);
         }
 
         /// <summary>
         /// Obra como tomadora de serviço. Amortiza o saldo dedutível.
         /// </summary>
-        /// <param name="codigoMunicipio">Código IBGE do município</param>
         /// <param name="nfse">NFS-e</param>
         /// <returns></returns>
-        public Task EnviarNFSePrestadorAsync(string codigoMunicipio, NFSePrestador nfse)
+        public Task EnviarNFSePrestadorAsync(NFSePrestador nfse)
         {
-            return httpClient.PostAsJsonAsync($"api/nfses/amortizar/{codigoMunicipio}", nfse);
+            return httpClient.PostAsJsonAsync($"api/nfses/amortizar", nfse);
         }
 
         /// <summary>
         /// Estorna o incremento de saldo dedutível. Ao cancelar uma NFS-e onde a obra é o tomador de serviço.
         /// </summary>
-        /// <param name="codigoMunicipio">Código IBGE do município</param>
         /// <param name="cnpj">CNPJ do prestador de serviço (Emitente).</param>
         /// <param name="numero">Número da NFS-e</param>
         /// <returns></returns>
-        public Task EstornarIncrementoAsync(string codigoMunicipio, string cnpj, string numero)
+        public Task EstornarIncrementoAsync(string cnpj, string numero)
         {
-            return httpClient.DeleteAsync($"api/nfses/estornarIncremento/{codigoMunicipio}/{cnpj}/{numero}");
+            return httpClient.DeleteAsync($"api/nfses/estornarIncremento/{cnpj}/{numero}");
         }
 
         /// <summary>
         /// Estorna a amortização de saldo dedutível. Ao cancelar uma NFS-e onde a obra é o prestador de serviço.
         /// </summary>
-        /// <param name="codigoMunicipio">Código IBGE do município</param>
         /// <param name="cnpj">CNPJ do prestador de serviço (Emitente).</param>
         /// <param name="numero">Número da NFS-e</param>
         /// <returns></returns>
-        public Task EstornarAmortizacaoAsync(string codigoMunicipio, string cnpj, string numero)
+        public Task EstornarAmortizacaoAsync(string cnpj, string numero)
         {
-            return httpClient.DeleteAsync($"api/nfses/estornarAmortizacao/{codigoMunicipio}/{cnpj}/{numero}");
+            return httpClient.DeleteAsync($"api/nfses/estornarAmortizacao/{cnpj}/{numero}");
         }
 
         /// <summary>
         /// Verifica se a obra existe
         /// </summary>
-        /// <param name="codigoMunicipio">Código IBGE do município</param>
         /// <param name="codigoObra">Código da obra</param>
         /// <returns></returns>
-        public async Task<bool> ObraExisteAsync(string codigoMunicipio, string codigoObra)
+        public async Task<bool> ObraExisteAsync(string codigoObra)
         {
-            var response = await httpClient.GetAsync($"api/obras/{codigoMunicipio}/{codigoObra}");
+            var response = await httpClient.GetAsync($"api/obras/{codigoObra}");
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return false;
 
@@ -114,13 +109,12 @@ namespace ACL.Recom.Client
         /// <summary>
         /// Obtem o valor máximo dedutível para o valor da NFS-e
         /// </summary>
-        /// <param name="codigoMunicipio">Código IBGE do município</param>
         /// <param name="codigoObra">Código da obra</param>
         /// <param name="valorNFSe">Valor da NFS-e</param>
         /// <returns></returns>
-        public Task<double> ObterValorDedutivelAsync(string codigoMunicipio, string codigoObra, double valorNFSe)
+        public Task<double> ObterValorDedutivelAsync(string codigoObra, double valorNFSe)
         {
-            return httpClient.GetJsonAsync<double>($"api/contacorrente/saldo/saque/{codigoMunicipio}/{codigoObra}/{valorNFSe}");
+            return httpClient.GetJsonAsync<double>($"api/contacorrente/saldo/saque/{codigoObra}/{valorNFSe}");
         }
 
         /// <summary>
@@ -167,11 +161,10 @@ namespace ACL.Recom.Client
         /// </summary>
         /// <param name="login">Login do usuário</param>
         /// <param name="cnpjConstrutora">CNPJ da construtora</param>
-        /// <param name="codigoMunicipio">Código IBGE do município</param>
         /// <returns></returns>
-        public Task RemoverPermissaoDoUsuarioAsync(string login, string cnpjConstrutora, string codigoMunicipio)
+        public Task RemoverPermissaoDoUsuarioAsync(string login, string cnpjConstrutora)
         {
-            return httpClient.DeleteAsync($"api/usuarios/{codigoMunicipio}/{login}/{cnpjConstrutora}");
+            return httpClient.DeleteAsync($"api/usuarios/{login}/{cnpjConstrutora}");
         }
     }
 }
