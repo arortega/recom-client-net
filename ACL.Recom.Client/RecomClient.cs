@@ -97,13 +97,9 @@ namespace ACL.Recom.Client
         /// </summary>
         /// <param name="codigoObra">Código da obra</param>
         /// <returns></returns>
-        public async Task<bool> ObraExisteAsync(string codigoObra)
+        public Task<Obra> ObterObraAsync(string codigoObra)
         {
-            var response = await httpClient.GetAsync($"api/obras/{codigoObra}");
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                return false;
-
-            return true;
+            return httpClient.GetJsonAsync<Obra>($"api/obras/{codigoObra}");
         }
 
         /// <summary>
