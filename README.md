@@ -4,5 +4,5 @@ Este repositório contém o código fonte do client .NET para acesso ao Recom AC
 
 ## Instalação
 ```sh
-$ dotnet add package ACL.Recom.Client --version 0.1.1
+$ dotnet add package ACL.Recom.Client --version 0.1.6
 ```
