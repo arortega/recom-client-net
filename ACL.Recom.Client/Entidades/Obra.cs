@@ -58,6 +58,8 @@ namespace ACL.Recom.Client.Entidades
         public string CertificadoHis { get; set; }
         public string Alvara { get; set; }
         public ResponsavelTecnico ResponsavelTecnico { get; set; }
+        public string PadraoObra { get; set; }
+        public decimal ValorM2 { get; set; }
     }
 
     public class ResponsavelTecnico
